@@ -20,10 +20,13 @@ export const redisClient = createClient({
   url: process.env.REDIS_URL,
 });
 redisClient.connect().then(()=>console.log("Connected to redis")).catch(console.error);
+
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-
+app.use(cors({
+  origin: 'http://localhost:5000', // Update this to your new frontend port
+  credentials: true
+}));
 app.use("/api/v1", userRoutes);
 
 app.listen(PORT, () => {
