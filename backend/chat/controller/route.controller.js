@@ -5,12 +5,12 @@ import axios from "axios";
 export const createNewChat = async (req, res)=>{
     try {
         const userId = req.user._id;
-        const {otheUserId} = req.body;
-        if(!otheUserId){
+        const {otherUserId} = req.body;
+        if(!otherUserId){
             return res.status(400).json({message: 'Other user id is required'});
         }
         const existingChat = await Chat.findOne({
-            users: { $all: [userId, otheUserId] , $size: 2 },
+            users: { $all: [userId, otherUserId] , $size: 2 },
         })
 
         if(existingChat){
@@ -21,7 +21,7 @@ export const createNewChat = async (req, res)=>{
         }
 
         const newChat = await Chat.create({
-            users: [userId, otheUserId]
+            users: [userId, otherUserId]
         })
 
         res.status(201).json({
